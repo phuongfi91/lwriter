@@ -13,7 +13,11 @@ class Index extends React.Component {
         <Switch>
           <Redirect exact={true} from="/" to="/home" />
           <Route path="/home" component={Main} />
-          <Route path="/wiki/:article" render={props => <MediaWikiLoader {...props} />} />
+          <Route path="/wiki/:article"
+                 render={props =>
+                   <div style={{ fontSize: '80%' }}>
+                     <MediaWikiLoader {...props} />
+                   </div>} />
         </Switch>
       </BrowserRouter>
     );
