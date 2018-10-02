@@ -1,0 +1,37 @@
+.Home{
+    display: flex;
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+.tools {
+    margin-top: 20px;
+    margin-bottom: 200px;
+    margin-right: -85px;
+    margin-left: -20px;
+}
+
+.material-button {
+    filter: drop-shadow( 2px 2px 10px #888888 );
+}
+
+.apps-container {
+    display: flex;
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -5px;
+    justify-content: center;
+}
+
+.splitter {
+    border-left: 0 !important;
+    border-right: 0 !important;
+    background-color: unset !important;
+}
+
+.splitter:hover {
+    background-color: dodgerblue !important;
+}

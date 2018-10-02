@@ -1,0 +1,56 @@
+.Contact {
+    background: #1d81ff;
+    display: flex;
+    width: 90%;
+    height: 85vh;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: 1px 1px 10px #888888;
+}
+
+.contact-card {
+    background: #23bbfb;
+    display: grid;
+    width: 90%;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-items: center;
+    padding: 20px;
+    box-shadow: 1px 1px 10px black;
+}
+
+.contact-card > p {
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    margin: -10px;
+}
+
+.contact-card > label {
+    color: white;
+    font-weight: bold;
+    font-size: xx-large;
+    text-shadow: 1px 1px 10px #888888;
+}
+
+.avatar {
+    width: 172px;
+    height: 172px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: 1px 1px 10px black;
+    align-self: center;
+    justify-self: center;
+}
+
+.link-container {
+    justify-self: center;
+}
+
+.link-container > a > img {
+    margin: 20px;
+}

@@ -1,0 +1,32 @@
+.Media-wiki-loader {
+    border-left: 1px solid #a7d7f9;
+    border-right: 1px solid #a7d7f9;
+    text-align: left;
+    padding: 10px;
+}
+
+.bad-query-text {
+    margin: 20px;
+    font-size: xx-large;
+    font-weight: bold;
+    color: darkblue;
+    text-shadow: 1px 1px 10px #888888;
+}
+
+.loader {
+    justify-self: center;
+    align-self: center;
+    filter: invert(1);
+    animation: App-logo-spin infinite 2s linear;
+    height: 80px;
+    margin: 40px;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

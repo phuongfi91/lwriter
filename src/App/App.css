@@ -1,0 +1,11 @@
+.App {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    background: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    position: relative;
+    z-index: 1;
+}
