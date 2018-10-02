@@ -17,6 +17,10 @@
     transform: scale(1.25);
 }
 
+.button:disabled {
+    background-color: #888888;
+}
+
 .toggle-switch {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -63,4 +67,12 @@
     font-family: Monospaced, monospace;
     vertical-align: middle;
     width: 20%;
+}
+
+.history-navigation button {
+    width: 100px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    margin-left: 15px;
+    margin-right: 15px;
 }

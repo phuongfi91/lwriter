@@ -43,9 +43,13 @@ class MediaWikiLoader extends React.Component {
     attributes['onClick'] = (e) => {
       console.log(e);
       if (e.target.rel === 'mw:WikiLink' && e.target.tagName === 'A') {
-        e.preventDefault();
-        this.renderLoadingIndicator();
-        this.requestArticle(e.target.title);
+        const articleName = e.target.title;
+        if (this.props.onGoToAnotherArticle) {
+          e.preventDefault();
+          this.renderLoadingIndicator();
+          this.requestArticle(articleName);
+          this.props.onGoToAnotherArticle(articleName);
+        }
       }
     };
 

@@ -158,6 +158,19 @@ class GoogleTranslate extends Component {
           </div>
           <input type="button" value="TRANSLATE" className='button'
                  onClick={(e) => this.handleDetectAndTranslate(this.state.input)} />
+
+          <div className='history-navigation'>
+            <button
+              className='button'
+              disabled={this.props.currentHistoryIndex <= 0}
+              onClick={event => this.props.onClickBack(event)}>Back
+            </button>
+            <button
+              className='button'
+              disabled={this.props.currentHistoryIndex >= this.props.historyLength - 1}
+              onClick={event => this.props.onClickForward(event)}>Forward
+            </button>
+          </div>
         </form>
       </div>
     );
