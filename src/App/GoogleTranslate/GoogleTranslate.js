@@ -15,7 +15,6 @@ class GoogleTranslate extends Component {
     this.state = {
       input: '',
       output: '',
-      onSelectionChange: props.onSelectionChange,
       isLiveUpdateEnabled: true
     };
   }
@@ -89,11 +88,18 @@ class GoogleTranslate extends Component {
   }
 
   handleSelection(event) {
-    function getSelectedText(target) {
+    const getSelectedText = (target) => {
       return target.value.slice(target.selectionStart, target.selectionEnd);
-    }
+    };
 
-    this.state.onSelectionChange(getSelectedText(event.target));
+    const getLanguageCode = (target) => {
+      return target.id === 'input' ? this.state.inputLang : this.state.outputLang;
+    };
+
+    this.props.onSelectionChange({
+      text: getSelectedText(event.target),
+      language: getLanguageCode(event.target)
+    });
   }
 
   handleLiveUpdateOption(value) {

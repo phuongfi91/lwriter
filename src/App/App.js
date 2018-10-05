@@ -9,50 +9,64 @@ class App extends Component {
     super(props);
 
     this.state = {
-      selection: '',
+      lookup: {
+        text: '',
+        language: ''
+      },
       currentHistoryIndex: -1,
       history: [],
     };
   }
 
   handleSelectionChange(newSelection) {
-    if (newSelection === '' || newSelection === this.state.selection) return;
+    if (newSelection.text === '') return;
+
+    if (
+      newSelection.text === this.state.lookup.text
+      &&
+      newSelection.language === this.state.lookup.language
+    ) {
+      return;
+    }
+
     this.setState(prevState => {
       console.log('Current State:', prevState);
       return {
-        selection: newSelection,
+        lookup: newSelection,
         currentHistoryIndex: ++prevState.currentHistoryIndex,
         history: prevState.history.slice(0, prevState.currentHistoryIndex)
           .concat(newSelection)
       };
     }, () => {
-      console.log('New State:', this.state)
+      console.log('New State:', this.state);
     });
   }
 
   goBack(event) {
     event.preventDefault();
+
     this.setState(prevState => {
       console.log('Current State:', prevState);
       return {
-        selection: prevState.history[prevState.currentHistoryIndex - 1],
+        lookup: prevState.history[prevState.currentHistoryIndex - 1],
         currentHistoryIndex: --prevState.currentHistoryIndex,
       };
     }, () => {
-      console.log('New State:', this.state)
+      console.log('New State:', this.state);
     });
   }
 
   goForward(event) {
     event.preventDefault();
+
     this.setState(prevState => {
       console.log('Current State:', prevState);
       return {
-        selection: prevState.history[prevState.currentHistoryIndex + 1],
+        lookup: prevState.history[prevState.currentHistoryIndex + 1],
         currentHistoryIndex: ++prevState.currentHistoryIndex,
       };
     }, () => {
-      console.log('New State:', this.state)
+      console.log('New State:', this.state);
     });
   }
 
@@ -67,7 +81,7 @@ class App extends Component {
           onClickForward={event => this.goForward(event)}
         />
         <MediaWikiLoader
-          selection={this.state.selection}
+          lookup={this.state.lookup}
           onGoToAnotherArticle={anotherArticleName => this.handleSelectionChange(anotherArticleName)}
         />
       </div>

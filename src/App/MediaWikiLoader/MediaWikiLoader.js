@@ -33,8 +33,8 @@ class MediaWikiLoader extends React.Component {
     var attributes = {};
     Array.from(wikiHtml.body.attributes)
       .forEach(attr => {
-        if (attr.name === 'class') return;
-        attributes[attr.name] = attr.value;
+        if (attr.text === 'class') return;
+        attributes[attr.text] = attr.value;
       });
     attributes['className'] = 'Media-wiki-loader';
     attributes['dangerouslySetInnerHTML'] = {
@@ -43,12 +43,21 @@ class MediaWikiLoader extends React.Component {
     attributes['onClick'] = (e) => {
       console.log(e);
       if (e.target.rel === 'mw:WikiLink' && e.target.tagName === 'A') {
-        const articleName = e.target.title;
         if (this.props.onGoToAnotherArticle) {
           e.preventDefault();
+          const articleName = e.target.text;
+          const langCode = LangCode[e.target.hash.substr(1)];
+          this.props.onGoToAnotherArticle(
+            {
+              text: articleName,
+              language: langCode
+            }
+          );
+          this.requestArticle(articleName, langCode);
           this.renderLoadingIndicator();
-          this.requestArticle(articleName);
-          this.props.onGoToAnotherArticle(articleName);
+        }
+        else {
+          window.location.reload();
         }
       }
     };
@@ -71,10 +80,10 @@ class MediaWikiLoader extends React.Component {
     // Predict the potential language code in case it's not given
     const languages = Array.from(wikiContent.getElementsByTagName('h2'));
     const languageNames = languages.map(lang => lang.id.toString());
+    const trials = [TargetLanguage, LangCode.English];
     if (languageCode === undefined) {
-      const trials = [TargetLanguage, LangCode.English];
       trials.some(langCode => {
-        if (languageNames.indexOf(Helper.getLanguageName(langCode)) > -1) {
+        if (languageNames.includes(Helper.getLanguageName(langCode))) {
           languageCode = langCode;
           return true;
         }
@@ -85,11 +94,14 @@ class MediaWikiLoader extends React.Component {
     // Filter out only the needed language
     if (languageCode !== undefined) {
       const languageName = Helper.getLanguageName(languageCode);
-      languages.forEach(language => {
-        if (language.id.toString() !== languageName) {
-          language.parentElement.remove();
-        }
-      });
+      const articleHasTheLanguage = languageNames.includes(languageName);
+      if (articleHasTheLanguage) {
+        languages.forEach(language => {
+          if (language.id.toString() !== languageName) {
+            language.parentElement.remove();
+          }
+        });
+      }
     }
 
     // Filter out translation in English wiktionary
@@ -175,12 +187,15 @@ class MediaWikiLoader extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     // Handle page fetching when used with the translation system
-    if (this.props.selection !== undefined) {
-      if (this.props.selection !== nextProps.selection) {
-        if (nextProps.selection !== '') {
+    if (this.props.lookup !== undefined) {
+      if (
+        this.props.lookup.text !== nextProps.lookup.text ||
+        this.props.lookup.language !== nextProps.lookup.language
+      ) {
+        if (nextProps.lookup.text !== '') {
           this.renderLoadingIndicator();
         }
-        this.requestArticle(nextProps.selection);
+        this.requestArticle(nextProps.lookup.text, nextProps.lookup.language);
       }
     }
     return true;
@@ -189,7 +204,9 @@ class MediaWikiLoader extends React.Component {
   componentWillMount() {
     // Handle page fetching when used as a standalone component
     if (this.props.match === undefined) return;
-    this.requestArticle(this.props.match.params.article);
+    const articleName = this.props.match.params.article;
+    const languageCode = LangCode[this.props.location.hash.substr(1)];
+    this.requestArticle(articleName, languageCode);
   }
 
   render() {
