@@ -2,7 +2,7 @@ This project aims to combine Google Translate with Wiktionary to aid language wr
 
 The project is built to exclusively deal with Finnish language. I started it to make a tool that better support me in learning Finnish, as well as learning how to do web development with React. Support for more languages will come if needed.
 
-This project can be used live at [Finnish Language Tool](https://lwriter.herokuapp.com/).
+This project can be used live at [Finnish Language Tool](https://lwriter.netlify.com/).
 
 Below you will find more information on what the tool is capable of.
 
