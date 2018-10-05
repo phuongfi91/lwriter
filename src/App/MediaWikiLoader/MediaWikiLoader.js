@@ -38,31 +38,32 @@ class MediaWikiLoader extends React.Component {
     attributes['dangerouslySetInnerHTML'] = {
       __html: wikiContent.innerHTML
     };
-    attributes['onClick'] = (e) => {
-      console.log(e);
-      if (e.target.rel === 'mw:WikiLink' && e.target.tagName === 'A') {
-        if (this.props.onGoToAnotherArticle) {
-          e.preventDefault();
-          const articleName = e.target.text;
-          const langCode = LangCode[e.target.hash.substr(1)];
-          this.props.onGoToAnotherArticle(
-            {
-              text: articleName,
-              language: langCode
-            }
-          );
-          this.requestArticle(articleName, langCode);
-          this.renderLoadingIndicator();
-        }
-        else {
-          window.location.reload();
-        }
-      }
-    };
+    attributes['onClick'] = (e) => this.handleArticleOnClick(e);
 
     this.setState({
       content: React.createElement('div', attributes)
     });
+  }
+
+  handleArticleOnClick(event) {
+    if (event.target.rel === 'mw:WikiLink' && event.target.tagName === 'A') {
+      if (this.props.onGoToAnotherArticle) {
+        event.preventDefault();
+        const articleName = event.target.text;
+        const langCode = LangCode[event.target.hash.substr(1)];
+        this.props.onGoToAnotherArticle(
+          {
+            text: articleName,
+            language: langCode
+          }
+        );
+        this.requestArticle(articleName, langCode);
+        this.renderLoadingIndicator();
+      }
+      else {
+        window.location.reload();
+      }
+    }
   }
 
   requestArticle(articleName, languageCode, suggestions) {
@@ -107,6 +108,31 @@ class MediaWikiLoader extends React.Component {
       })
       .catch((data) => {
         console.log(data);
+        this.searchFuzzily(articleName);
+      });
+  }
+
+  searchFuzzily(articleName) {
+    console.log('SIMILAR ARTICLE search request sent for: ', articleName);
+    const url = 'https://en.wiktionary.org/w/api.php?action=opensearch&origin=*&search=' +
+      encodeURIComponent(articleName);
+
+    Axios.request(url)
+      .then((data) => {
+        const suggestions = data.data[1];
+        if (suggestions.length === 0) {
+          throw new Error('There is no article that closely match the input: ' + articleName);
+        }
+        const suggestionsDiv = WikiParser.createSuggestionsDiv('Did you mean: ', suggestions);
+        this.setState({
+          content: <div
+            dangerouslySetInnerHTML={{ __html: suggestionsDiv.innerHTML }}
+            onClick={(e) => this.handleArticleOnClick(e)}
+          />
+        });
+      })
+      .catch((data) => {
+        console.log(data);
         this.setState({
           content: <div className='bad-query-text'>
             <label>
@@ -115,6 +141,7 @@ class MediaWikiLoader extends React.Component {
           </div>
         });
       });
+
   }
 
   renderLoadingIndicator() {
