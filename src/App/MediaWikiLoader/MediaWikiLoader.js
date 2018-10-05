@@ -6,6 +6,8 @@ import logo from '../../Resources/logo.svg';
 import WikiParser from '../WikiParser';
 import LangCode from '../Language';
 
+const Mark = window.Mark;
+
 class MediaWikiLoader extends React.Component {
   constructor(props) {
     super(props);
@@ -15,7 +17,7 @@ class MediaWikiLoader extends React.Component {
     };
   }
 
-  handleContentChange(data, languageCode, suggestions) {
+  handleContentChange(data, languageCode, suggestions, originalArticleName) {
     var { wikiHtml, wikiContent } = WikiParser.parseData(data, languageCode, suggestions);
 
     // Use Wikipedia content stylesheet
@@ -25,6 +27,12 @@ class MediaWikiLoader extends React.Component {
       let stylesheetElem = wikiHtml.querySelector('head link[rel="stylesheet"]');
       stylesheetElem.setAttribute('id', wikiCssId);
       document.head.appendChild(stylesheetElem);
+    }
+
+    // Mark the original article name
+    if (originalArticleName) {
+      var marker = new Mark(wikiContent);
+      marker.mark(originalArticleName, { 'accuracy': 'exactly' });
     }
 
     // Create and return the react element
@@ -57,7 +65,7 @@ class MediaWikiLoader extends React.Component {
             language: langCode
           }
         );
-        this.requestArticle(articleName, langCode);
+        this.requestArticle(articleName, langCode, undefined, articleName);
         this.renderLoadingIndicator();
       }
       else {
@@ -66,14 +74,14 @@ class MediaWikiLoader extends React.Component {
     }
   }
 
-  requestArticle(articleName, languageCode, suggestions) {
+  requestArticle(articleName, languageCode, suggestions, originalArticleName) {
     if (articleName === '') return;
 
     console.log('GET ARTICLE request sent for: ', articleName);
     const url = 'https://en.wiktionary.org:443/api/rest_v1/page/html/' + encodeURIComponent(articleName);
 
     Axios.request(url)
-      .then((data) => this.handleContentChange(data.data, languageCode, suggestions))
+      .then((data) => this.handleContentChange(data.data, languageCode, suggestions, originalArticleName))
       .catch((data) => {
         console.log(data);
         this.searchForArticle(articleName);
@@ -104,7 +112,7 @@ class MediaWikiLoader extends React.Component {
         suggestions = suggestions.filter(s => s);
         suggestions = suggestions.length > 0 ? suggestions : null;
 
-        this.requestArticle(matches.bestMatch.target, null, suggestions);
+        this.requestArticle(matches.bestMatch.target, null, suggestions, articleName);
       })
       .catch((data) => {
         console.log(data);
@@ -162,7 +170,8 @@ class MediaWikiLoader extends React.Component {
         if (nextProps.lookup.text !== '') {
           this.renderLoadingIndicator();
         }
-        this.requestArticle(nextProps.lookup.text, nextProps.lookup.language);
+        this.requestArticle(
+          nextProps.lookup.text, nextProps.lookup.language, undefined, nextProps.lookup.text);
       }
     }
     return true;
@@ -173,7 +182,7 @@ class MediaWikiLoader extends React.Component {
     if (!this.props.match) return;
     const articleName = this.props.match.params.article;
     const languageCode = LangCode[this.props.location.hash.substr(1)];
-    this.requestArticle(articleName, languageCode);
+    this.requestArticle(articleName, languageCode, undefined, articleName);
   }
 
   render() {
