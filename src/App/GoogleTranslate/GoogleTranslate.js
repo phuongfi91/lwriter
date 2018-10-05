@@ -32,8 +32,13 @@ class GoogleTranslate extends Component {
 
   handleOutputChange(data) {
     const decoder = document.createElement('textarea');
-    decoder.innerHTML = data.data.data.translations[0].translatedText;
-    const translatedText = decoder.value;
+    const translations = data.data.data.translations;
+
+    var translatedText = '';
+    translations.forEach(t => {
+      decoder.innerHTML = t.translatedText;
+      translatedText += decoder.value + '\n';
+    });
 
     this.setState({
         output: translatedText
@@ -71,7 +76,7 @@ class GoogleTranslate extends Component {
     Axios.post(translateUrl + ApiKey, {
       source: this.state.inputLang,
       target: this.state.outputLang,
-      q: textToTranslate
+      q: textToTranslate.split('\n')
     })
       .then((response) => this.handleOutputChange(response))
       .catch(function (reason) {
