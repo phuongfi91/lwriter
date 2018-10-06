@@ -12,6 +12,7 @@ class MediaWikiLoader extends React.Component {
   constructor(props) {
     super(props);
 
+    this.mediaWikiLoaderRef = React.createRef();
     this.state = {
       content: ''
     };
@@ -42,6 +43,7 @@ class MediaWikiLoader extends React.Component {
         if (attr.text === 'class') return;
         attributes[attr.text] = attr.value;
       });
+    attributes['ref'] = this.mediaWikiLoaderRef;
     attributes['className'] = 'Media-wiki-loader';
     attributes['dangerouslySetInnerHTML'] = {
       __html: wikiContent.innerHTML
@@ -187,6 +189,15 @@ class MediaWikiLoader extends React.Component {
 
   render() {
     return this.state.content;
+  }
+
+  componentDidUpdate() {
+    if (this.mediaWikiLoaderRef.current) {
+      this.mediaWikiLoaderRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
   }
 }
 

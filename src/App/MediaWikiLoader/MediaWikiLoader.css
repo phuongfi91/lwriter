@@ -3,6 +3,7 @@
     border-right: 1px solid #a7d7f9;
     text-align: left;
     padding: 10px;
+    animation: fade-in 1s;
 }
 
 .bad-query-text {
@@ -17,9 +18,10 @@
     justify-self: center;
     align-self: center;
     filter: invert(1);
-    animation: App-logo-spin infinite 2s linear;
+    animation: App-logo-spin infinite 2s linear, fade-in 1s;
     height: 80px;
     margin: 40px;
+    margin-bottom: 100vh;
 }
 
 @keyframes App-logo-spin {
@@ -28,5 +30,14 @@
     }
     to {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
