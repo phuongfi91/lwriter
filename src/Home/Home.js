@@ -54,7 +54,7 @@ class Home extends Component {
       }
 
       apps.push(
-        <ReflexElement key={'App_' + i} minSize="300">
+        <ReflexElement key={'App_' + i} minSize="320">
           <div className='pane-content'>
             <App/>
           </div>
