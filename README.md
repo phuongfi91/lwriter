@@ -11,6 +11,7 @@ Below you will find more information on what the tool is capable of.
 ## Table of Contents
 
 - [Features](#features)
+- [Upcoming Features](#upcoming-features)
 - [Limitations](#limitations)
 
 ## Features
@@ -26,12 +27,19 @@ LWriter is currently capable of the following features:
 * `Navigation within embedded Wiktionary` allows you to navigate interesting or relevant word within the look up window just by clicking on them, just like normal browsing.
 * `Standalone Wiktionary Portal`, which is accessible through `/wiki/%ARTICLE%` page, this is done to help those needing the filtered output in third party application. In my case, I use it for GoldenDict desktop app to get a cleaner output everytime I look up a word. For e.g. going to `/wiki/book` will display a filtered Wiktionary page of `book` page.
 
+## Upcoming Features
+
+A few new features are planned as I see myself needing them:
+
+* `Libvoikko`, which is probably the most developed free Finnish spell checker. Integrating the Web Assembly library into the app could allow live spelling and grammar checking, as well as suggestion fix for error.
+* `A better layout` as I do notice the quirk of current translation layout, more work will be done over time to address this.
+* `Text to Speech and vice versa`, can be done using other Google API, but a bit more expensive so it will have to be considered.
+* `Learned word`, I do find myself learning new words all the time, storing them somewhere would be a good way to go forwards.
+
 ## Limitations
 
 Due to limitations in Google Translate API, this tool cannot achieve the following features as in Google Translate:
 
-* Voice input
-* Voice output
 * Alternative phrase translations
 * Alternative word translations with statistics
 
