@@ -94,7 +94,7 @@ class GoogleTranslate extends Component {
 
   handleSelection(event) {
     const getSelectedText = (target) => {
-      return target.value.slice(target.selectionStart, target.selectionEnd);
+      return target.value.slice(target.selectionStart, target.selectionEnd).toLowerCase();
     };
 
     const getLanguageCode = (target) => {

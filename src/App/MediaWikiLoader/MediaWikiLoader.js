@@ -99,8 +99,11 @@ class MediaWikiLoader extends React.Component {
     Axios.request(url)
       .then((data) => {
         const searchResults = [];
+        const loweredArticleName = articleName.toLowerCase();
         data.data.query.search.forEach(result => {
-          if (result.snippet.includes(articleName)) {
+          if (result.snippet.includes(articleName)||
+              result.snippet.includes(loweredArticleName))
+          {
             searchResults.push(result.title);
           }
         });
@@ -112,7 +115,7 @@ class MediaWikiLoader extends React.Component {
           return match.target !== matches.bestMatch.target ? match.target : null;
         });
         suggestions = suggestions.filter(s => s);
-        suggestions = suggestions.length > 0 ? suggestions : null;
+        suggestions = suggestions.length > 0 ? suggestions.slice(0, 20) : null;
 
         this.requestArticle(matches.bestMatch.target, null, suggestions, articleName);
       })
