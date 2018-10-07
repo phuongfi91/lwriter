@@ -1,3 +1,5 @@
+![lwriter](./resources/lwriter-screenshot.png)
+
 This project aims to combine Google Translate with Wiktionary to aid language writing and learning.
 
 The project is built to exclusively deal with Finnish language. I started it to make a tool that better support me in learning Finnish, as well as learning how to do web development with React. Support for more languages will come if needed.
