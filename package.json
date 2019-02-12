@@ -9,7 +9,7 @@
     "react-dom": "^16.5.2",
     "react-reflex": "^2.2.9",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5",
+    "react-scripts": "^2.1.5",
     "react-switch": "^3.0.4",
     "string-similarity": "^1.2.2"
   },
@@ -18,5 +18,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
